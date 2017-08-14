@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        simple_lyrics
+    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="javascripts/tock.min.js"></script>
+    <script src="javascripts/howler.core.js"></script>
+    <script src="javascripts/index.js"></script>
+
+    <link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet" />
+    <link href="stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <!-- <div id="title">
+                <%=title%>
+            </div> -->
+            <div id="clock"></div>
+            <div id="lap"></div>
+            <div id="script"></div>
+            <div id="translate"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var t = new Lyrics();
+    var sound, progress;
+
+    $.getJSON('playscripts/01kyomei.json', function(res) {
+    // $.getJSON('playscripts/02konayuki.json', function(res) {
+        t.setScript(res.script);
+
+        sound = new Howl({
+            src: [res.file_location],
+            loop: true,
+            onload: function() {
+                sound.play();
+            },
+            onplay: function() {
+                t.printAll();
+
+                if(progress) progress.reset();
+                progress = new Tock({
+                    callback: function() {
+                        // document.getElementById("clock").innerHTML = this.lap();
+                    }
+                });
+
+                progress.start();
+            },
+            onend: function() {
+                console.log('Finished!');
+            }
+        });
+
+      });
+
+    // document.addEventListener("keydown", function(event) {
+    //     if(event.which == 32) {
+    //         console.log(progress);
+    //         document.getElementById("lap").innerHTML += "<br>" + progress.lap();
+    //     }
+    // });
+</script>
+
+</html>
