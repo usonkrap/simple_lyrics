@@ -45,10 +45,10 @@ body {
 
 @media screen and (max-width: 767px) {
   #script {
-		font-size: 6vw;
+		font-size: 5vw;
 	}
 
   #translate{
-    font-size: 2.8vw;
+    font-size: 2.6vw;
   }
 }

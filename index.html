@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <title>
@@ -12,7 +12,7 @@
 
     <script src="javascripts/tock.min.js"></script>
     <script src="javascripts/howler.core.js"></script>
-    <script src="javascripts/index.js"></script>
+    <script src="javascripts/lyrics.js"></script>
 
     <link href="https://fonts.googleapis.com/earlyaccess/notosansjapanese.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet" />
@@ -25,21 +25,20 @@
             <!-- <div id="title">
                 <%=title%>
             </div> -->
-            <div id="clock"></div>
-            <div id="lap"></div>
             <div id="script"></div>
             <div id="translate"></div>
+            <div id="clock"></div>
+            <div id="lap"></div>
         </div>
     </div>
 </body>
 
 <script>
-    var t = new Lyrics();
+    var konayuki = new Lyrics();
     var sound, progress;
 
-    $.getJSON('playscripts/01kyomei.json', function(res) {
-    // $.getJSON('playscripts/02konayuki.json', function(res) {
-        t.setScript(res.script);
+    // $.getJSON('playscripts/01kyomei.json', function(res) {
+    $.getJSON('playscripts/konayuki.json', function(res) {
 
         sound = new Howl({
             src: [res.file_location],
@@ -48,7 +47,9 @@
                 sound.play();
             },
             onplay: function() {
-                t.printAll();
+                res.script.forEach(function(line){
+                    konayuki.print(line);
+                });
 
                 if(progress) progress.reset();
                 progress = new Tock({
@@ -66,12 +67,12 @@
 
       });
 
-    // document.addEventListener("keydown", function(event) {
-    //     if(event.which == 32) {
-    //         console.log(progress);
-    //         document.getElementById("lap").innerHTML += "<br>" + progress.lap();
-    //     }
-    // });
+    document.addEventListener("keydown", function(event) {
+        if(event.which == 32) {
+            console.log(progress);
+            document.getElementById("lap").innerHTML += ", " + progress.lap();
+        }
+    });
 </script>
 
 </html>
